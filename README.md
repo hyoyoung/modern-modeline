@@ -2,7 +2,7 @@
 
 
 A modern mode-line configuration for Emacs.
-(Base on https://github.com/gexplorer/simple-modeline)
+(Base on https://github.com/gexplorer/simple-modeline) <br>
 It's experimental project. I recommend to use simple-modeline.
 
 # About
