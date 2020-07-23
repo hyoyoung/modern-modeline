@@ -1,4 +1,4 @@
-;;; simple-modeline-segments.el --- The segments for simple-modeline -*- lexical-binding: t; -*-
+;;; modern-modeline-segments.el --- The segments for modern-modeline -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019  Eder Elorriaga
 
@@ -17,18 +17,18 @@
 
 ;;; Commentary:
 
-;; The segments for simple-modeline
+;; The segments for modern-modeline
 
 ;;; Code:
 
-(require 'simple-modeline-core)
+(require 'modern-modeline-core)
 (require 'subr-x)
 
 (defvar minions-direct)
 (defvar minions-mode-line-lighter)
 (defvar minions-mode-line-minor-modes-map)
 
-(defun simple-modeline-make-mouse-map (mouse function)
+(defun modern-modeline-make-mouse-map (mouse function)
   "Return a keymap with single entry for mouse key MOUSE on the mode line.
 MOUSE is defined to run function FUNCTION with no args in the buffer
 corresponding to the mode line clicked."
@@ -36,7 +36,7 @@ corresponding to the mode line clicked."
     (define-key map (vector 'mode-line mouse) function)
     map))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "modified"
  "Displays a color-coded buffer modification/read-only indicator in the mode-line."
  (if (not (string-match-p "\\*.*\\*" (buffer-name)))
@@ -45,14 +45,14 @@ corresponding to the mode line clicked."
        (propertize
         (if read-only " " (if modified " ●" " ○"))
         'face `(:inherit
-                ,(if modified 'simple-modeline-status-modified
-                   (if read-only 'simple-modeline-status-error
-                     'simple-modeline-unimportant)))
+                ,(if modified 'modern-modeline-status-modified
+                   (if read-only 'modern-modeline-status-error
+                     'modern-modeline-unimportant)))
         'help-echo (format
                     "Buffer is %s and %smodified\nmouse-1: Toggle read-only status."
                     (if read-only "read-only" "writable")
                     (if modified "" "not "))
-        'local-map (purecopy (simple-modeline-make-mouse-map
+        'local-map (purecopy (modern-modeline-make-mouse-map
                               'mouse-1
                               (lambda (event)
                                 (interactive "e")
@@ -60,12 +60,12 @@ corresponding to the mode line clicked."
                                   (read-only-mode 'toggle)))))
         'mouse-face 'mode-line-highlight))))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "buffer-name"
  "Displays the name of the current buffer in the mode-line."
  (propertize " %b" 'face 'mode-line-buffer-id))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "position"
  "Displays the current cursor position in the mode-line."
  `((line-number-mode
@@ -87,12 +87,12 @@ corresponding to the mode line clicked."
                                        (region-bounds))))
                     'font-lock-face 'font-lock-variable-name-face))))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "vc"
  "Displays color-coded version control information in the mode-line."
  '(vc-mode vc-mode))
 
-(defvar simple-modeline-segment-encoding-map
+(defvar modern-modeline-segment-encoding-map
   (let ((map (make-sparse-keymap)))
     (define-key map [mode-line mouse-1]
       (lambda (e)
@@ -107,9 +107,9 @@ corresponding to the mode line clicked."
 	(with-selected-window (posn-window (event-start e))
 	  (call-interactively #'set-buffer-file-coding-system))))
     (purecopy map))
-  "Local keymap for the coding-system part of the simple-modeline.")
+  "Local keymap for the coding-system part of the modern-modeline.")
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "encoding"
  "Displays the encoding style of the buffer in the mode-line."
  `(" "
@@ -124,9 +124,9 @@ corresponding to the mode line clicked."
                      (symbol-name buffer-file-coding-system))
            "Buffer coding system: none specified")))
      'mouse-face 'mode-line-highlight
-     'local-map simple-modeline-segment-encoding-map)))
+     'local-map modern-modeline-segment-encoding-map)))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "eol"
  "Displays the EOL style of the current buffer in the mode-line."
  (let* ((eol (coding-system-eol-type buffer-file-coding-system))
@@ -144,7 +144,7 @@ corresponding to the mode line clicked."
     mnemonic
     'help-echo (format "End-of-line style: %s\nmouse-1: Cycle" desc)
     'local-map (purecopy
-                (simple-modeline-make-mouse-map
+                (modern-modeline-make-mouse-map
                  'mouse-1
                  (lambda (event)
                    (interactive "e")
@@ -154,14 +154,14 @@ corresponding to the mode line clicked."
                         (cond ((eq eol 0) 'dos) ((eq eol 1) 'mac) (t 'unix))))))))
     'mouse-face 'mode-line-highlight)))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "misc-info"
  "Displays the current value of `mode-line-misc-info' in the mode-line."
- (let ((misc-info (string-trim (format-mode-line mode-line-misc-info 'simple-modeline-unimportant))))
+ (let ((misc-info (string-trim (format-mode-line mode-line-misc-info 'modern-modeline-unimportant))))
    (unless (string= misc-info "")
      (concat " " misc-info))))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "input-method"
  "Displays the input-method of the buffer in the mode-line."
  `(""
@@ -171,7 +171,7 @@ corresponding to the mode line clicked."
                             "Current input method: %s\nmouse-1: Describe current input method"
                             current-input-method)
                  local-map ,(purecopy
-                             (simple-modeline-make-mouse-map
+                             (modern-modeline-make-mouse-map
                               'mouse-1
                               (lambda (e)
                                 (interactive "e")
@@ -179,7 +179,7 @@ corresponding to the mode line clicked."
                                   (describe-current-input-method)))))
                  mouse-face 'mode-line-highlight))))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "minor-modes"
  "Displays the current minor modes in the mode-line."
  (let ((direct-alist))
@@ -191,7 +191,7 @@ corresponding to the mode line clicked."
      (format-mode-line direct-alist)
      t t)))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "minions-mode"
  "Display minions mode in the mode-line."
  (if (and (boundp 'minions-mode))
@@ -200,13 +200,13 @@ corresponding to the mode line clicked."
      'help-echo "Minions mouse-1: Display minions modes menu"
      'local-map minions-mode-line-minor-modes-map)))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "process"
  "Displays the current value of `mode-line-process' in the mode-line."
  (when mode-line-process
    (concat " " (string-trim (format-mode-line mode-line-process)))))
 
-(simple-modeline-create-segment
+(modern-modeline-create-segment
  "major-mode"
  "Displays the current major mode in the mode-line."
  (propertize
@@ -216,5 +216,5 @@ corresponding to the mode line clicked."
               (format-mode-line mode-name)))
   'face 'bold))
 
-(provide 'simple-modeline-segments)
-;;; simple-modeline-segments.el ends here
+(provide 'modern-modeline-segments)
+;;; modern-modeline-segments.el ends here

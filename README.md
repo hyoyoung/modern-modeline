@@ -1,6 +1,5 @@
 # modern-modeline
 
-
 A modern mode-line configuration for Emacs.
 (Base on https://github.com/gexplorer/simple-modeline) <br>
 It's experimental project. I recommend to use simple-modeline.
@@ -28,17 +27,17 @@ It's experimental project. I recommend to use simple-modeline.
 ## Manual
 
 ```
-(require 'simple-modeline)
-(simple-modeline-mode)
+(require 'modern-modeline)
+(modern-modeline-mode)
 ```
 
 ## With use-package
 
 ```
-(use-package simple-modeline
-  :hook (after-init . simple-modeline-mode))
+(use-package modern-modeline
+  :hook (after-init . modern-modeline-mode))
 ```
 
 # Preview
 
-![Simple modeline](screenshot.png)
+![Modern modeline](screenshot.png)

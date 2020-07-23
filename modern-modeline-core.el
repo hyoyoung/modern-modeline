@@ -1,4 +1,4 @@
-;;; simple-modeline-core.el --- The core libraries for simple-modeline -*- lexical-binding: t; -*-
+;;; modern-modeline-core.el --- The core libraries for modern-modeline -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019  Eder Elorriaga
 
@@ -17,43 +17,43 @@
 
 ;;; Commentary:
 
-;; The core libraries for simple-modeline.
+;; The core libraries for modern-modeline.
 
 ;;; Code:
 
-(defgroup simple-modeline nil
-  "A simple mode line."
-  :prefix "simple-modeline-"
+(defgroup modern-modeline nil
+  "A Modern mode line."
+  :prefix "modern-modeline-"
   :group 'mode-line)
 
-(defvar simple-modeline--default-mode-line mode-line-format
+(defvar modern-modeline--default-mode-line mode-line-format
   "The former value of `mode-line-format'.")
 
 ;;
 ;; Faces
 ;;
 
-(defface simple-modeline-unimportant
+(defface modern-modeline-unimportant
   '((t (:inherit (shadow))))
   "Face used for less important mode-line elements.")
 
-(defface simple-modeline-status-modified
+(defface modern-modeline-status-modified
   '((t (:inherit (font-lock-variable-name-face))))
   "Face used for the 'modified' indicator symbol in the mode-line.")
 
-(defface simple-modeline-status-info
+(defface modern-modeline-status-info
   '((t (:inherit (font-lock-string-face))))
   "Face used for generic status indicators in the mode-line.")
 
-(defface simple-modeline-status-success
+(defface modern-modeline-status-success
   '((t (:inherit (success))))
   "Face used for success status indicators in the mode-line.")
 
-(defface simple-modeline-status-warning
+(defface modern-modeline-status-warning
   '((t (:inherit (warning))))
   "Face for warning status indicators in the mode-line.")
 
-(defface simple-modeline-status-error
+(defface modern-modeline-status-error
   '((t (:inherit (error))))
   "Face for error stauts indicators in the mode-line.")
 
@@ -61,15 +61,15 @@
 ;; Helpers
 ;;
 
-(defmacro simple-modeline-create-segment (name doc &rest body)
-  "Create a new segment with NAME, DOC and BODY function for `simple-modeline-mode'."
-  (let ((segment (intern (format "simple-modeline-segment-%s" name)))
-        (toggle (intern (format "simple-modeline-toggle-%s" name)))
-        (show (intern (format "simple-modeline-show-%s" name))))
+(defmacro modern-modeline-create-segment (name doc &rest body)
+  "Create a new segment with NAME, DOC and BODY function for `modern-modeline-mode'."
+  (let ((segment (intern (format "modern-modeline-segment-%s" name)))
+        (toggle (intern (format "modern-modeline-toggle-%s" name)))
+        (show (intern (format "modern-modeline-show-%s" name))))
     `(progn
        (defcustom ,show t
          ,(format "Visibility of the %s segment of the mode-line." name)
-         :group 'simple-modeline
+         :group 'modern-modeline
          :type 'boolean)
        (defun ,toggle ()
          ,(format "Toggle visibility of %s segment of the mode-line." name)
@@ -82,22 +82,22 @@
              ,@body))
          ,doc))))
 
-(defun simple-modeline--format (left-segments right-segments)
+(defun modern-modeline--format (left-segments right-segments)
   "Return a string of `window-width' length containing LEFT-SEGMENTS and RIGHT-SEGMENTS, aligned respectively."
-  (let* ((left (simple-modeline--format-segments left-segments))
-         (right (simple-modeline--format-segments right-segments))
+  (let* ((left (modern-modeline--format-segments left-segments))
+         (right (modern-modeline--format-segments right-segments))
          (reserve (length right)))
     (concat
      left
      (propertize " " 'display `((space :align-to (- right ,reserve))))
      right)))
 
-(defun simple-modeline--format-segments (segments)
+(defun modern-modeline--format-segments (segments)
   "Return a string from a list of SEGMENTS."
   (format-mode-line (mapcar
                      (lambda (segment)
                        `(:eval (,segment)))
                      segments)))
 
-(provide 'simple-modeline-core)
-;;; simple-modeline-core.el ends here
+(provide 'modern-modeline-core)
+;;; modern-modeline-core.el ends here
