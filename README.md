@@ -1,8 +1,9 @@
-# simple-modeline
+# modern-modeline
 
-[![MELPA](https://melpa.org/packages/simple-modeline-badge.svg)](https://melpa.org/#/simple-modeline)
 
-A simple mode-line configuration for Emacs.
+A modern mode-line configuration for Emacs.
+(Base on https://github.com/gexplorer/simple-modeline)
+It's experimental project. I recommend to use simple-modeline.
 
 # About
 
